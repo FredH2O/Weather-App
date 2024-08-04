@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Weather App</h1>
+      </header>
+      <main>
+        <section class="weather-info">
+          <h2 class="location">Location</h2>
+          <div class="weather-details">
+            <p class="temperature">
+              Temperature: <span id="temperature">--</span>°C
+            </p>
+            <p class="condition">Condition: <span id="condition">--</span></p>
+          </div>
+        </section>
+        <section class="search">
+          <input type="text" id="city" placeholder="Enter city" />
+          <button id="search" onclick="fetchWeatherData()">Search</button>
+        </section>
+      </main>
+      <footer>
+        <p>
+          Weather data provided by
+          <a href="https://weatherapi.com" target="_blank">WeatherAPI.com</a>
+        </p>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
