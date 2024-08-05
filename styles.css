@@ -41,15 +41,15 @@ h1 {
 }
 
 .icon-img {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
 }
 
-#condition {
+.condition-div {
   display: flex;
-  margin: auto;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  margin: 5px;
 }
 
 .location {

@@ -3,7 +3,7 @@
 let cityInput = document.getElementById("city");
 let searchBtn = document.getElementById("search");
 let temperature = document.getElementById("temperature");
-let condition = document.getElementById("condition");
+let conditionDiv = document.querySelector(".condition-div");
 let locationHeading = document.querySelector(".location");
 
 searchBtn.addEventListener("click", function () {
@@ -65,14 +65,17 @@ function updateTemperature(temperatureC, temperatureF) {
 }
 
 function updateConditionAndIcon(text, icon) {
+  conditionDiv.innerHTML = "";
   const ICON_IMG = document.createElement("img");
+  const TEXT_CONDITION = document.createElement("p");
   ICON_IMG.classList.add("icon-img");
   ICON_IMG.src = icon;
   ICON_IMG.alt = icon;
 
-  condition.innerHTML = "";
-  condition.textContent = text;
-  condition.appendChild(ICON_IMG);
+  TEXT_CONDITION.textContent = text;
+
+  conditionDiv.appendChild(TEXT_CONDITION);
+  conditionDiv.appendChild(ICON_IMG);
 }
 
 // Call the async function
