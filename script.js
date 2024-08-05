@@ -13,7 +13,7 @@ searchBtn.addEventListener("click", function () {
 
 async function fetchWeatherData(city) {
   if (!city) {
-    alert("Please enter a city!");
+    locationHeading.textContent = "Enter a city or country.";
     return;
   }
   const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${encodeURIComponent(
@@ -22,6 +22,7 @@ async function fetchWeatherData(city) {
 
   const options = {
     method: "GET",
+
     headers: {
       "x-rapidapi-key": "73736933c8msh0e36fc0e81a021cp1634e9jsn68c86f8cf32e",
       "x-rapidapi-host": "weatherapi-com.p.rapidapi.com",
@@ -33,10 +34,11 @@ async function fetchWeatherData(city) {
     if (!response.ok) {
       throw new Error("Network response not okay.");
     }
+
     const result = await response.json(); // extract data using result
     console.log(result);
 
-    updateLocation(result.location.country, result.location.name);
+    updateLocation(result.location.name, result.location.country);
     updateTemperature(result.current.temp_c, result.current.temp_f);
     updateConditionAndIcon(
       result.current.condition.text,
@@ -47,9 +49,10 @@ async function fetchWeatherData(city) {
   }
 }
 
-function updateLocation(countryName, locationName) {
+function updateLocation(locationName, countryName) {
   locationHeading.textContent = `${countryName}, ${locationName}`;
 }
+
 function updateTemperature(temperatureC, temperatureF) {
   temperature.textContent = `${temperatureC}°C / ${temperatureF}°F`;
   if (temperatureC >= 25) {
@@ -60,14 +63,15 @@ function updateTemperature(temperatureC, temperatureF) {
     temperature.style.color = "Blue";
   }
 }
-function updateConditionAndIcon(text, icon) {
-  condition.innerHTML = "";
-  condition.textContent = text;
 
+function updateConditionAndIcon(text, icon) {
   const ICON_IMG = document.createElement("img");
   ICON_IMG.classList.add("icon-img");
   ICON_IMG.src = icon;
   ICON_IMG.alt = icon;
+
+  condition.innerHTML = "";
+  condition.textContent = text;
   condition.appendChild(ICON_IMG);
 }
 
