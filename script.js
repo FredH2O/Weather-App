@@ -1,15 +1,25 @@
 // weather app
 
-let city = document.getElementById("city").value;
+let cityInput = document.getElementById("city");
+let searchBtn = document.getElementById("search");
 let temperature = document.getElementById("temperature");
 let condition = document.getElementById("condition");
 let locationHeading = document.querySelector(".location");
 
-console.log(city);
+searchBtn.addEventListener("click", function () {
+  const cityPicked = cityInput.value;
+  fetchWeatherData(cityPicked);
+});
 
-async function fetchWeatherData() {
-  const url =
-    "https://weatherapi-com.p.rapidapi.com/current.json?q=53.1%2C-0.13";
+async function fetchWeatherData(city) {
+  if (!city) {
+    alert("Please enter a city!");
+    return;
+  }
+  const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${encodeURIComponent(
+    city
+  )}`;
+
   const options = {
     method: "GET",
     headers: {
@@ -26,7 +36,7 @@ async function fetchWeatherData() {
     const result = await response.json(); // extract data using result
     console.log(result);
 
-    updateLocation(result.location.name);
+    updateLocation(result.location.country, result.location.name);
     updateTemperature(result.current.temp_c, result.current.temp_f);
     updateConditionAndIcon(
       result.current.condition.text,
@@ -37,17 +47,25 @@ async function fetchWeatherData() {
   }
 }
 
-function updateLocation(locationName) {
-  locationHeading.textContent = locationName;
+function updateLocation(countryName, locationName) {
+  locationHeading.textContent = `${countryName}, ${locationName}`;
 }
 function updateTemperature(temperatureC, temperatureF) {
   temperature.textContent = `${temperatureC}°C / ${temperatureF}°F`;
+  if (temperatureC >= 25) {
+    temperature.style.color = "Red";
+  } else if (temperatureC >= 15) {
+    temperature.style.color = "Orange";
+  } else {
+    temperature.style.color = "Blue";
+  }
 }
 function updateConditionAndIcon(text, icon) {
   condition.innerHTML = "";
   condition.textContent = text;
 
   const ICON_IMG = document.createElement("img");
+  ICON_IMG.classList.add("icon-img");
   ICON_IMG.src = icon;
   ICON_IMG.alt = icon;
   condition.appendChild(ICON_IMG);
