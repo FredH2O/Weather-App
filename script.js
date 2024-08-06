@@ -5,17 +5,29 @@ let searchBtn = document.getElementById("search");
 let temperature = document.getElementById("temperature");
 let conditionDiv = document.querySelector(".condition-div");
 let locationHeading = document.querySelector(".location");
+let body = document.querySelector("body");
+let timeZone = document.querySelector(".time-zone");
 
 searchBtn.addEventListener("click", function () {
-  const cityPicked = cityInput.value;
-  fetchWeatherData(cityPicked);
+  const CITY_PICKED = cityInput.value;
+  fetchWeatherData(CITY_PICKED);
+  cityInput.value = "";
+});
+
+cityInput.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const CITY_PICKED = cityInput.value;
+    fetchWeatherData(CITY_PICKED);
+    cityInput.value = "";
+  }
 });
 
 async function fetchWeatherData(city) {
-  if (!city) {
-    locationHeading.textContent = "Enter a city or country.";
+  /*if (!city) {
+    alert("Enter a city or country.");
     return;
-  }
+  }*/
+
   const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${encodeURIComponent(
     city
   )}`;
@@ -44,9 +56,22 @@ async function fetchWeatherData(city) {
       result.current.condition.text,
       result.current.condition.icon
     );
+    timeZoneArea(result.location.tz_id);
   } catch (error) {
     console.error(error);
   }
+}
+
+function timeZoneArea(timeLocale) {
+  const optionsTime = {
+    timeZone: timeLocale,
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
+  const formattedTime = new Intl.DateTimeFormat([], optionsTime);
+  timeZone.textContent = `${formattedTime.format(new Date())}`;
 }
 
 function updateLocation(locationName, countryName) {
@@ -72,11 +97,31 @@ function updateConditionAndIcon(text, icon) {
   ICON_IMG.src = icon;
   ICON_IMG.alt = icon;
 
-  TEXT_CONDITION.textContent = text;
+  TEXT_CONDITION.textContent = `${text}`;
 
   conditionDiv.appendChild(TEXT_CONDITION);
   conditionDiv.appendChild(ICON_IMG);
-}
 
-// Call the async function
-fetchWeatherData();
+  const WEATHER = text.toLowerCase();
+
+  switch (true) {
+    case WEATHER.includes("rain"):
+      body.style.backgroundImage = "url('images/rainy.jpg')";
+      break;
+    case WEATHER.includes("sunny"):
+      body.style.backgroundImage = "url('images/sunny.jpg')";
+      break;
+    case WEATHER.includes("clear"):
+      body.style.backgroundImage = "url('images/clear.jpg')";
+      break;
+    case WEATHER.includes("snow"):
+      body.style.backgroundImage = "url('images/snow.jpg')";
+      break;
+    case WEATHER.includes("cloud") || WEATHER.includes("overcast"):
+      body.style.backgroundImage = "url('images/cloudy.jpg')";
+      break;
+    default:
+      body.style.backgroundImage = "url('images/backgroundImg.jpg')";
+      break;
+  }
+}
