@@ -2,31 +2,43 @@
 
 let cityInput = document.getElementById("city");
 let searchBtn = document.getElementById("search");
-let temperature = document.getElementById("temperature");
+let tempC = document.getElementById("temp-c");
+let tempF = document.getElementById("temp-f");
+let windKph = document.getElementById("wind-kph");
+let windMph = document.getElementById("wind-mph");
+let windStatus = document.getElementById("wind-status");
 let conditionDiv = document.querySelector(".condition-div");
 let locationHeading = document.querySelector(".location");
 let body = document.querySelector("body");
 let timeZone = document.querySelector(".time-zone");
 
-searchBtn.addEventListener("click", function () {
-  const CITY_PICKED = cityInput.value;
-  fetchWeatherData(CITY_PICKED);
-  cityInput.value = "";
-});
+async function fetchForecast(city) {
+  const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${encodeURIComponent(
+    city
+  )}`;
 
-cityInput.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    const CITY_PICKED = cityInput.value;
-    fetchWeatherData(CITY_PICKED);
-    cityInput.value = "";
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": "73736933c8msh0e36fc0e81a021cp1634e9jsn68c86f8cf32e",
+      "x-rapidapi-host": "weatherapi-com.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.text();
+    console.log(result);
+  } catch (error) {
+    console.error(error);
   }
-});
+}
 
 async function fetchWeatherData(city) {
-  /*if (!city) {
+  if (!city) {
     alert("Enter a city or country.");
     return;
-  }*/
+  }
 
   const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${encodeURIComponent(
     city
@@ -50,15 +62,22 @@ async function fetchWeatherData(city) {
     const result = await response.json(); // extract data using result
     console.log(result);
 
+    if (result.error) {
+      alert(result.error.message);
+      return;
+    }
+
     updateLocation(result.location.name, result.location.country);
     updateTemperature(result.current.temp_c, result.current.temp_f);
+    windSpeed(result.current.wind_kph, result.current.wind_mph);
     updateConditionAndIcon(
       result.current.condition.text,
       result.current.condition.icon
     );
     timeZoneArea(result.location.tz_id);
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
+    locationHeading.textContent = `Please enter city or country.`;
   }
 }
 
@@ -67,7 +86,6 @@ function timeZoneArea(timeLocale) {
     timeZone: timeLocale,
     hour: "numeric",
     minute: "numeric",
-    second: "numeric",
     hour12: true,
   };
   const formattedTime = new Intl.DateTimeFormat([], optionsTime);
@@ -79,13 +97,17 @@ function updateLocation(locationName, countryName) {
 }
 
 function updateTemperature(temperatureC, temperatureF) {
-  temperature.textContent = `${temperatureC}°C / ${temperatureF}°F`;
+  tempC.textContent = `${temperatureC}°C /`;
+  tempF.textContent = `${temperatureF}°F`;
   if (temperatureC >= 25) {
-    temperature.style.color = "Red";
+    tempC.style.color = "Red";
+    tempF.style.color = "Red";
   } else if (temperatureC >= 15) {
-    temperature.style.color = "Orange";
+    tempC.style.color = "Orange";
+    tempF.style.color = "Orange";
   } else {
-    temperature.style.color = "Blue";
+    tempC.style.color = "Blue";
+    tempF.style.color = "Blue";
   }
 }
 
@@ -125,3 +147,40 @@ function updateConditionAndIcon(text, icon) {
       break;
   }
 }
+
+function windSpeed(kph, mph) {
+  windKph.textContent = `${kph} KPH`;
+  windMph.textContent = `${mph} MPH`;
+
+  if (kph <= 1) {
+    windStatus.textContent = "CALM";
+  } else if (kph <= 15) {
+    windStatus.textContent = "LIGHT BREEZE";
+  } else if (kph <= 30) {
+    windStatus.textContent = "MODERATE BREEZE";
+  } else if (kph <= 50) {
+    windStatus.textContent = "STRONG BREEZE";
+  } else if (kph <= 75) {
+    windStatus.textContent = "GALE";
+  } else if (kph <= 117) {
+    windStatus.textContent = "STORM";
+  } else {
+    windStatus.textContent = "HURRICANE";
+  }
+}
+
+searchBtn.addEventListener("click", function () {
+  const CITY_PICKED = cityInput.value;
+  fetchWeatherData(CITY_PICKED);
+  fetchForecast(CITY_PICKED);
+  cityInput.value = "";
+});
+
+cityInput.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const CITY_PICKED = cityInput.value;
+    fetchWeatherData(CITY_PICKED);
+    fetchForecast(CITY_PICKED);
+    cityInput.value = "";
+  }
+});
