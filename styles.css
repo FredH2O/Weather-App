@@ -17,7 +17,7 @@ body {
   background-image: url("images/backgroundImg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  transition: 1s ease;
+  transition: 0.5s ease;
 }
 
 .container {
@@ -70,6 +70,20 @@ h1 {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.next-two-days,
+.date-forecast {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 5px auto;
+}
+
+#search:hover {
+  transform: translateY(-1px);
+  transition: 0.3s ease;
 }
 
 #city {
