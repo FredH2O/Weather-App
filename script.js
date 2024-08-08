@@ -1,5 +1,5 @@
 // weather app
-
+let header = document.getElementById("header");
 let cityInput = document.getElementById("city");
 let searchBtn = document.getElementById("search");
 let tempC = document.getElementById("temp-c");
@@ -11,11 +11,13 @@ let conditionDiv = document.querySelector(".condition-div");
 let locationHeading = document.querySelector(".location");
 let body = document.querySelector("body");
 let timeZone = document.querySelector(".time-zone");
+let nextTwoDaysDiv = document.querySelector(".next-two-days");
+let dateForecastDiv = document.querySelector(".date-forecast");
 
 async function fetchForecast(city) {
   const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${encodeURIComponent(
     city
-  )}`;
+  )}&days=3`;
 
   const options = {
     method: "GET",
@@ -27,8 +29,20 @@ async function fetchForecast(city) {
 
   try {
     const response = await fetch(url, options);
-    const result = await response.text();
+    const result = await response.json();
     console.log(result);
+
+    dateCast(
+      result.forecast.forecastday[0].date,
+      result.forecast.forecastday[1].date,
+      result.forecast.forecastday[2].date
+    );
+
+    nextTwoDaysForecast(
+      result.forecast.forecastday[0].day.daily_chance_of_rain,
+      result.forecast.forecastday[1].day.daily_chance_of_rain,
+      result.forecast.forecastday[2].day.daily_chance_of_rain
+    );
   } catch (error) {
     console.error(error);
   }
@@ -60,7 +74,7 @@ async function fetchWeatherData(city) {
     }
 
     const result = await response.json(); // extract data using result
-    console.log(result);
+    //console.log(result);
 
     if (result.error) {
       alert(result.error.message);
@@ -81,6 +95,42 @@ async function fetchWeatherData(city) {
   }
 }
 
+function dateCast(today, tomorrow, afterTomorrow) {
+  dateForecastDiv.innerHTML = "";
+
+  let todayDate = document.createElement("p");
+  let tomorrowDate = document.createElement("p");
+  let afterTomorrowDate = document.createElement("p");
+
+  today = today.slice(8, 10);
+  tomorrow = tomorrow.slice(8, 10);
+  afterTomorrow = afterTomorrow.slice(8, 10);
+
+  todayDate.textContent = today;
+  tomorrowDate.textContent = tomorrow;
+  afterTomorrowDate.textContent = afterTomorrow;
+
+  dateForecastDiv.appendChild(todayDate);
+  dateForecastDiv.appendChild(tomorrowDate);
+  dateForecastDiv.appendChild(afterTomorrowDate);
+}
+
+function nextTwoDaysForecast(today, tomorrow, afterTomorrow) {
+  nextTwoDaysDiv.innerHTML = "";
+
+  let todayForecast = document.createElement("p");
+  let tomorrowForecast = document.createElement("p");
+  let afterTomorrowForecast = document.createElement("p");
+
+  todayForecast.textContent = `${today}%`;
+  tomorrowForecast.textContent = `${tomorrow}%`;
+  afterTomorrowForecast.textContent = `${afterTomorrow}%`;
+
+  nextTwoDaysDiv.appendChild(todayForecast);
+  nextTwoDaysDiv.appendChild(tomorrowForecast);
+  nextTwoDaysDiv.appendChild(afterTomorrowForecast);
+}
+
 function timeZoneArea(timeLocale) {
   const optionsTime = {
     timeZone: timeLocale,
@@ -93,7 +143,8 @@ function timeZoneArea(timeLocale) {
 }
 
 function updateLocation(locationName, countryName) {
-  locationHeading.textContent = `${countryName}, ${locationName}`;
+  locationHeading.innerHTML = `<u>${countryName}, ${locationName}</u><br><br>`;
+  header.textContent = "";
 }
 
 function updateTemperature(temperatureC, temperatureF) {
