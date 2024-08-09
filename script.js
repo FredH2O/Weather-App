@@ -14,6 +14,8 @@ let timeZone = document.querySelector(".time-zone");
 let nextTwoDaysDiv = document.querySelector(".next-two-days");
 let dateForecastDiv = document.querySelector(".date-forecast");
 
+let timeCheck;
+
 async function fetchForecast(city) {
   const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${encodeURIComponent(
     city
@@ -84,11 +86,11 @@ async function fetchWeatherData(city) {
     updateLocation(result.location.name, result.location.country);
     updateTemperature(result.current.temp_c, result.current.temp_f);
     windSpeed(result.current.wind_kph, result.current.wind_mph);
+    timeZoneArea(result.location.tz_id);
     updateConditionAndIcon(
       result.current.condition.text,
       result.current.condition.icon
     );
-    timeZoneArea(result.location.tz_id);
   } catch (error) {
     console.error(error.message);
     locationHeading.textContent = `Please enter city or country.`;
@@ -132,14 +134,18 @@ function nextTwoDaysForecast(today, tomorrow, afterTomorrow) {
 }
 
 function timeZoneArea(timeLocale) {
+  let AM = [24, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  let PM = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+
   const optionsTime = {
     timeZone: timeLocale,
     hour: "numeric",
     minute: "numeric",
-    hour12: true,
+    hour12: false,
   };
   const formattedTime = new Intl.DateTimeFormat([], optionsTime);
   timeZone.textContent = `${formattedTime.format(new Date())}`;
+  timeCheck = formattedTime.format(new Date()).split(":")[0];
 }
 
 function updateLocation(locationName, countryName) {
@@ -150,6 +156,7 @@ function updateLocation(locationName, countryName) {
 function updateTemperature(temperatureC, temperatureF) {
   tempC.textContent = `${temperatureC}°C /`;
   tempF.textContent = `${temperatureF}°F`;
+
   if (temperatureC >= 25) {
     tempC.style.color = "Red";
     tempF.style.color = "Red";
@@ -176,23 +183,50 @@ function updateConditionAndIcon(text, icon) {
   conditionDiv.appendChild(ICON_IMG);
 
   const WEATHER = text.toLowerCase();
+  const HOUR = parseInt(timeCheck, 10);
+
+  console.log(timeCheck);
+  console.log(typeof timeCheck);
+  console.log(HOUR);
 
   switch (true) {
+    case WEATHER.includes("clear") && (HOUR >= 18 || HOUR < 6):
+      body.style.backgroundImage = "url('images/nightClear.jpg')";
+      break;
+
+    case (WEATHER.includes("cloud") || WEATHER.includes("overcast")) &&
+      (HOUR >= 18 || HOUR < 6):
+      body.style.backgroundImage = "url('images/nightCloudy.jpg')";
+      break;
+
+    case WEATHER.includes("snow") && (HOUR >= 18 || HOUR < 6):
+      body.style.backgroundImage = "url('images/nightCold.jpg')";
+      break;
+
+    case WEATHER.includes("sunny") && (HOUR >= 18 || HOUR < 6):
+      body.style.backgroundImage = "url('images/nightSunny.jpg')";
+      break;
+
     case WEATHER.includes("rain"):
       body.style.backgroundImage = "url('images/rainy.jpg')";
       break;
+
     case WEATHER.includes("sunny"):
       body.style.backgroundImage = "url('images/sunny.jpg')";
       break;
+
     case WEATHER.includes("clear"):
       body.style.backgroundImage = "url('images/clear.jpg')";
       break;
+
     case WEATHER.includes("snow"):
       body.style.backgroundImage = "url('images/snow.jpg')";
       break;
+
     case WEATHER.includes("cloud") || WEATHER.includes("overcast"):
       body.style.backgroundImage = "url('images/cloudy.jpg')";
       break;
+
     default:
       body.style.backgroundImage = "url('images/backgroundImg.jpg')";
       break;
