@@ -11,6 +11,7 @@ let conditionDiv = document.querySelector(".condition-div");
 let locationHeading = document.querySelector(".location");
 let body = document.querySelector("body");
 let timeZone = document.querySelector(".time-zone");
+let hourFormat = document.querySelector(".hour-format");
 let nextTwoDaysDiv = document.querySelector(".next-two-days");
 let dateForecastDiv = document.querySelector(".date-forecast");
 
@@ -98,19 +99,52 @@ async function fetchWeatherData(city) {
 }
 
 function dateCast(today, tomorrow, afterTomorrow) {
+  const ST = [1, 21, 31];
+  const ND = [2, 22];
+  const RD = [3, 23];
+
   dateForecastDiv.innerHTML = "";
 
   let todayDate = document.createElement("p");
   let tomorrowDate = document.createElement("p");
   let afterTomorrowDate = document.createElement("p");
 
-  today = today.slice(8, 10);
-  tomorrow = tomorrow.slice(8, 10);
-  afterTomorrow = afterTomorrow.slice(8, 10);
+  today = parseInt(today.slice(8, 10));
+  tomorrow = parseInt(tomorrow.slice(8, 10));
+  afterTomorrow = parseInt(afterTomorrow.slice(8, 10));
 
-  todayDate.textContent = today;
-  tomorrowDate.textContent = tomorrow;
-  afterTomorrowDate.textContent = afterTomorrow;
+  console.log(today);
+  console.log(typeof today);
+
+  if (ST.includes(today)) {
+    todayDate.textContent = `${today}st`;
+  } else if (ND.includes(today)) {
+    todayDate.textContent = `${today}nd`;
+  } else if (RD.includes(today)) {
+    todayDate.textContent = `${today}rd`;
+  } else {
+    todayDate.textContent = `${today}th`;
+  }
+
+  if (ST.includes(tomorrow)) {
+    tomorrowDate.textContent = `${tomorrow}st`;
+  } else if (ND.includes(tomorrow)) {
+    tomorrowDate.textContent = `${tomorrow}nd`;
+  } else if (RD.includes(tomorrow)) {
+    tomorrowDate.textContent = `${tomorrow}rd`;
+  } else {
+    tomorrowDate.textContent = `${tomorrow}th`;
+  }
+
+  if (ST.includes(afterTomorrow)) {
+    afterTomorrowDate.textContent = `${afterTomorrow}st`;
+  } else if (ND.includes(afterTomorrow)) {
+    afterTomorrowDate.textContent = `${afterTomorrow}nd`;
+  } else if (RD.includes(afterTomorrow)) {
+    afterTomorrowDate.textContent = `${afterTomorrow}rd`;
+  } else {
+    afterTomorrowDate.textContent = `${afterTomorrow}th`;
+  }
 
   dateForecastDiv.appendChild(todayDate);
   dateForecastDiv.appendChild(tomorrowDate);
@@ -134,9 +168,6 @@ function nextTwoDaysForecast(today, tomorrow, afterTomorrow) {
 }
 
 function timeZoneArea(timeLocale) {
-  let AM = [24, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  let PM = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-
   const optionsTime = {
     timeZone: timeLocale,
     hour: "numeric",
@@ -146,6 +177,17 @@ function timeZoneArea(timeLocale) {
   const formattedTime = new Intl.DateTimeFormat([], optionsTime);
   timeZone.textContent = `${formattedTime.format(new Date())}`;
   timeCheck = formattedTime.format(new Date()).split(":")[0];
+
+  let HOUR = parseInt(timeCheck, 10);
+  //console.log(HOUR);
+  //console.log(timeCheck);
+  //console.log(hourFormat);
+
+  if (HOUR >= 12 && HOUR < 23) {
+    hourFormat.textContent = "PM";
+  } else {
+    hourFormat.textContent = "AM";
+  }
 }
 
 function updateLocation(locationName, countryName) {
@@ -185,9 +227,11 @@ function updateConditionAndIcon(text, icon) {
   const WEATHER = text.toLowerCase();
   const HOUR = parseInt(timeCheck, 10);
 
+  /*
   console.log(timeCheck);
   console.log(typeof timeCheck);
   console.log(HOUR);
+  */
 
   switch (true) {
     case WEATHER.includes("clear") && (HOUR >= 18 || HOUR < 6):
