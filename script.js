@@ -14,42 +14,20 @@ let timeZone = document.querySelector(".time-zone");
 let hourFormat = document.querySelector(".hour-format");
 let nextTwoDaysDiv = document.querySelector(".next-two-days");
 let dateForecastDiv = document.querySelector(".date-forecast");
+let todayForecast = document.createElement("p");
+let tomorrowForecast = document.createElement("p");
+let afterTomorrowForecast = document.createElement("p");
+
+let todayReading;
+let tomorrowReading;
+let afterTomorrowReading;
+let WEATHER;
+let snow;
+let todaySnowChance;
+let tomorrowSnowChance;
+let afterTomorrowSnowChance;
 
 let timeCheck;
-
-async function fetchForecast(city) {
-  const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${encodeURIComponent(
-    city
-  )}&days=3`;
-
-  const options = {
-    method: "GET",
-    headers: {
-      "x-rapidapi-key": "73736933c8msh0e36fc0e81a021cp1634e9jsn68c86f8cf32e",
-      "x-rapidapi-host": "weatherapi-com.p.rapidapi.com",
-    },
-  };
-
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    console.log(result);
-
-    dateCast(
-      result.forecast.forecastday[0].date,
-      result.forecast.forecastday[1].date,
-      result.forecast.forecastday[2].date
-    );
-
-    nextTwoDaysForecast(
-      result.forecast.forecastday[0].day.daily_chance_of_rain,
-      result.forecast.forecastday[1].day.daily_chance_of_rain,
-      result.forecast.forecastday[2].day.daily_chance_of_rain
-    );
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 async function fetchWeatherData(city) {
   if (!city) {
@@ -95,6 +73,103 @@ async function fetchWeatherData(city) {
   } catch (error) {
     console.error(error.message);
     locationHeading.textContent = `Please enter city or country.`;
+  }
+}
+
+async function fetchForecast(city) {
+  const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${encodeURIComponent(
+    city
+  )}&days=3`;
+
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": "73736933c8msh0e36fc0e81a021cp1634e9jsn68c86f8cf32e",
+      "x-rapidapi-host": "weatherapi-com.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    console.log(result);
+
+    dateCast(
+      result.forecast.forecastday[0].date,
+      result.forecast.forecastday[1].date,
+      result.forecast.forecastday[2].date
+    );
+
+    nextTwoDaysForecast(
+      result.forecast.forecastday[0].day.daily_chance_of_rain,
+      result.forecast.forecastday[1].day.daily_chance_of_rain,
+      result.forecast.forecastday[2].day.daily_chance_of_rain
+    );
+    snowChance(
+      result.forecast.forecastday[0].day.daily_will_it_snow,
+      result.forecast.forecastday[1].day.daily_will_it_snow,
+      result.forecast.forecastday[2].day.daily_will_it_snow
+    );
+
+    forecastIcons(
+      result.forecast.forecastday[0].day.daily_will_it_rain,
+      result.forecast.forecastday[1].day.daily_will_it_rain,
+      result.forecast.forecastday[2].day.daily_will_it_rain
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function snowChance(snowToday, snowTomorrow, snowAfterTomorrow) {
+  todaySnowChance = snowToday;
+  tomorrowSnowChance = snowTomorrow;
+  afterTomorrowSnowChance = snowAfterTomorrow;
+}
+
+function forecastIcons(today, tomorrow, afterTomorrow) {
+  let iconToday = document.createElement("img");
+  let iconTomorrow = document.createElement("img");
+  let iconAfterTomorrow = document.createElement("img");
+
+  console.log(todaySnowChance, tomorrowSnowChance, afterTomorrowSnowChance);
+
+  if (
+    today === 1 &&
+    (WEATHER.includes("cloud") || WEATHER.includes("overcast"))
+  ) {
+    iconToday.src = "weather-icons/animated/rainy-5.svg";
+    iconToday.alt = "Cloudy & Rainy";
+    todayForecast.appendChild(iconToday);
+  } else if (today === 1 && WEATHER.includes("sunny")) {
+    iconToday.src = "weather-icons/animated/rainy-1.svg";
+    iconToday.alt = "Sunny & Rainy";
+    todayForecast.appendChild(iconToday);
+  } else if (todaySnowChance === 1 && WEATHER.includes("snow")) {
+    iconToday.src = "weather-icons/animated/snowy-6.svg";
+    iconToday.alt = "Snow";
+    todayForecast.appendChild(iconToday);
+  } else if (
+    today === 0 &&
+    (WEATHER.includes("clear") || WEATHER.includes("sunny"))
+  ) {
+    iconToday.src = "weather-icons/animated/day.svg";
+    iconToday.alt = "Clear";
+    todayForecast.appendChild(iconToday);
+  }
+
+  if (tomorrow === 1) {
+    iconTomorrow.src = "weather-icons/animated/rainy-3.svg";
+    iconTomorrow.alt = "Rainy";
+    tomorrowForecast.appendChild(iconTomorrow);
+  } else {
+  }
+
+  if (afterTomorrow === 1) {
+    iconAfterTomorrow.src = "weather-icons/animated/rainy-3.svg";
+    iconAfterTomorrow.alt = "Rainy";
+    afterTomorrowForecast.appendChild(iconAfterTomorrow);
+  } else {
   }
 }
 
@@ -154,9 +229,9 @@ function dateCast(today, tomorrow, afterTomorrow) {
 function nextTwoDaysForecast(today, tomorrow, afterTomorrow) {
   nextTwoDaysDiv.innerHTML = "";
 
-  let todayForecast = document.createElement("p");
-  let tomorrowForecast = document.createElement("p");
-  let afterTomorrowForecast = document.createElement("p");
+  todayReading = today;
+  tomorrowReading = tomorrow;
+  afterTomorrowReading = afterTomorrow;
 
   todayForecast.textContent = `${today}%`;
   tomorrowForecast.textContent = `${tomorrow}%`;
@@ -174,20 +249,21 @@ function timeZoneArea(timeLocale) {
     minute: "numeric",
     hour12: false,
   };
+
   const formattedTime = new Intl.DateTimeFormat([], optionsTime);
   timeZone.textContent = `${formattedTime.format(new Date())}`;
   timeCheck = formattedTime.format(new Date()).split(":")[0];
 
-  let HOUR = parseInt(timeCheck, 10);
-  //console.log(HOUR);
-  //console.log(timeCheck);
-  //console.log(hourFormat);
+  /*let HOUR = parseInt(timeCheck, 10);
+  console.log(HOUR);
+  console.log(timeCheck);
+  console.log(hourFormat);
 
   if (HOUR >= 12 && HOUR < 23) {
     hourFormat.textContent = "PM";
   } else {
     hourFormat.textContent = "AM";
-  }
+  }*/
 }
 
 function updateLocation(locationName, countryName) {
@@ -224,14 +300,8 @@ function updateConditionAndIcon(text, icon) {
   conditionDiv.appendChild(TEXT_CONDITION);
   conditionDiv.appendChild(ICON_IMG);
 
-  const WEATHER = text.toLowerCase();
+  WEATHER = text.toLowerCase();
   const HOUR = parseInt(timeCheck, 10);
-
-  /*
-  console.log(timeCheck);
-  console.log(typeof timeCheck);
-  console.log(HOUR);
-  */
 
   switch (true) {
     case WEATHER.includes("clear") && (HOUR >= 18 || HOUR < 6):
