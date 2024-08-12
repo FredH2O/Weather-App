@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchForecast(city) {
     const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${encodeURIComponent(
       city
-    )}&days=3`;
+    )}&days=5`;
 
     const options = {
       method: "GET",
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateTemperature(temperatureC, temperatureF) {
     tempC.textContent = `${temperatureC}°C /`;
-    tempF.textContent = `${temperatureF}°F`;
+    tempF.textContent = `${temperatureF}°F 🌡`;
 
     if (temperatureC >= 25) {
       tempC.style.color = "Red";
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function windSpeed(kph, mph) {
     windKph.textContent = `${kph} KPH`;
-    windMph.textContent = `${mph} MPH`;
+    windMph.textContent = `${mph} MPH 🍃`;
 
     if (kph <= 1) {
       windStatus.textContent = "CALM";
