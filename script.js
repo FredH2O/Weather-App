@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     } catch (error) {
       console.error(error.message);
+      alert("Please enter a city or country!");
       locationHeading.textContent = `Please enter city or country.`;
     }
   }
