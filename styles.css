@@ -5,7 +5,8 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Dosis", sans-serif;
+  font-optical-sizing: auto;
   background-color: #303030;
   color: #333;
   margin: 0;
@@ -17,7 +18,7 @@ body {
   background-image: url("images/backgroundImg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  transition: 0.5s ease;
+  transition: 0.9s ease;
 }
 
 .container {
@@ -81,7 +82,15 @@ h1 {
 }
 
 .weather-icons {
-  width: 45px;
+  width: 70px;
+}
+
+.rain-chance {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .search {

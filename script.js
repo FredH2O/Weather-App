@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let tomorrowForecast = document.createElement("p");
   let afterTomorrowForecast = document.createElement("p");
   let forecastDivMain = document.querySelector(".forecast-div");
+  let rainChance = document.querySelector(".rain-chance");
+  let darkModeBtn = document.getElementById("darkMode");
+  let container = document.querySelector(".container");
 
   let todayReading;
   let tomorrowReading;
@@ -28,6 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
   let tomorrowSnowChance;
   let afterTomorrowSnowChance;
   let timeCheck;
+
+  darkModeBtn.addEventListener("click", () => {
+    container.style.backgroundColor = "black";
+    container.style.color = "white";
+  });
 
   async function fetchWeatherData(city) {
     if (!city) {
@@ -92,6 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(url, options);
       const result = await response.json();
       console.log(result);
+
+      rainChanceBorder();
 
       dateCast(
         result.forecast.forecastday[0].date,
@@ -308,6 +318,12 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       windStatus.textContent = "HURRICANE";
     }
+  }
+
+  function rainChanceBorder() {
+    rainChance.innerHTML = "";
+    rainChance.textContent = "Rain or Snow Chance";
+    rainChance.style.borderBottom = "1px solid black";
   }
 
   function forecastIcons(today, tomorrow, afterTomorrow) {
