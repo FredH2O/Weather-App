@@ -1,0 +1,18 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "This is a simple and user-friendly weather app that allows users to check the current weather conditions for any location worldwide. The app is built using basic web technologies: HTML, CSS, and JavaScript. It utilizes external APIs to fetch real-time weather data and display it with visually appealing, animated SVG icons.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
