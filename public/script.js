@@ -32,11 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let afterTomorrowSnowChance;
   let timeCheck;
 
-  darkModeBtn.addEventListener("click", () => {
-    container.style.backgroundColor = "black";
-    container.style.color = "white";
-  });
-
   async function fetchWeatherData(city) {
     if (!city) {
       alert("Enter a city or country.");
