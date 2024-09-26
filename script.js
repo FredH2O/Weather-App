@@ -143,44 +143,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (true) {
       case WEATHER.includes("clear") && (HOUR >= 18 || HOUR < 6):
-        body.style.backgroundImage = "url('images/nightClear.jpg')";
+        body.style.backgroundImage = "url('backgrounds/nightClear.jpg')";
         break;
 
       case (WEATHER.includes("cloud") || WEATHER.includes("overcast")) &&
         (HOUR >= 18 || HOUR < 6):
-        body.style.backgroundImage = "url('images/nightCloudy.jpg')";
+        body.style.backgroundImage = "url('backgrounds/nightCloudy.jpg')";
         break;
 
       case WEATHER.includes("snow") && (HOUR >= 18 || HOUR < 6):
-        body.style.backgroundImage = "url('images/nightCold.jpg')";
+        body.style.backgroundImage = "url('backgrounds/nightCold.jpg')";
         break;
 
       case WEATHER.includes("sunny") && (HOUR >= 18 || HOUR < 6):
-        body.style.backgroundImage = "url('images/nightSunny.jpg')";
+        body.style.backgroundImage = "url('backgrounds/nightSunny.jpg')";
         break;
 
       case WEATHER.includes("rain"):
-        body.style.backgroundImage = "url('images/rainy.jpg')";
+        body.style.backgroundImage = "url('backgrounds/rainy.jpg')";
         break;
 
       case WEATHER.includes("sunny"):
-        body.style.backgroundImage = "url('images/sunny.jpg')";
+        body.style.backgroundImage = "url('backgrounds/sunny.jpg')";
         break;
 
       case WEATHER.includes("clear"):
-        body.style.backgroundImage = "url('images/clear.jpg')";
+        body.style.backgroundImage = "url('backgrounds/clear.jpg')";
         break;
 
       case WEATHER.includes("snow"):
-        body.style.backgroundImage = "url('images/snow.jpg')";
+        body.style.backgroundImage = "url('backgrounds/snow.jpg')";
         break;
 
       case WEATHER.includes("cloud") || WEATHER.includes("overcast"):
-        body.style.backgroundImage = "url('images/cloudy.jpg')";
+        body.style.backgroundImage = "url('backgrounds/cloudy.jpg')";
         break;
 
       default:
-        body.style.backgroundImage = "url('images/backgroundImg.jpg')";
+        body.style.backgroundImage = "url('backgrounds/backgroundImg.jpg')";
         break;
     }
   }
@@ -339,13 +339,13 @@ document.addEventListener("DOMContentLoaded", function () {
         WEATHER.includes("patch") ||
         WEATHER.includes("mist"))
     ) {
-      iconToday.src = "weather-icons/animated/rainy-5.svg";
+      iconToday.src = "animated/rainy-5.svg";
       iconToday.alt = "Cloudy & Rainy";
     } else if (today === 1 && WEATHER.includes("thunder")) {
-      iconToday.src = "weather-icons/animated/thunder.svg";
+      iconToday.src = "animated/thunder.svg";
       iconToday.alt = "Thunder & Rainy";
     } else if (today === 1 && WEATHER.includes("sunny")) {
-      iconToday.src = "weather-icons/animated/rainy-1.svg";
+      iconToday.src = "animated/rainy-1.svg";
       iconToday.alt = "Sunny & Rainy";
     } else if (
       todaySnowChance === 1 &&
@@ -354,25 +354,25 @@ document.addEventListener("DOMContentLoaded", function () {
         WEATHER.includes("blizzard") ||
         WEATHER.includes("ice"))
     ) {
-      iconToday.src = "weather-icons/animated/snowy-6.svg";
+      iconToday.src = "animated/snowy-6.svg";
       iconToday.alt = "Snow";
     } else if (
       today === 0 &&
       (WEATHER.includes("clear") || WEATHER.includes("sunny"))
     ) {
-      iconToday.src = "weather-icons/animated/day.svg";
+      iconToday.src = "animated/day.svg";
       iconToday.alt = "Clear";
     } else if (today === 0 && WEATHER.includes("cloud")) {
-      iconToday.src = "weather-icons/animated/cloudy.svg";
+      iconToday.src = "animated/cloudy.svg";
       iconToday.alt = "Cloud";
     } else if (
       today === 0 &&
       (WEATHER.includes("rain") || WEATHER.includes("patch"))
     ) {
-      iconToday.src = "weather-icons/animated/rainy-4.svg";
+      iconToday.src = "animated/rainy-4.svg";
       iconToday.alt = "Light Rain";
     } else {
-      iconToday.src = "weather-icons/animated/day.svg";
+      iconToday.src = "animated/day.svg";
       iconToday.alt = "Clear";
     }
     forecastDivMain.appendChild(iconToday);
@@ -386,13 +386,13 @@ document.addEventListener("DOMContentLoaded", function () {
         WEATHER.includes("patch") ||
         WEATHER.includes("mist"))
     ) {
-      iconTomorrow.src = "weather-icons/animated/rainy-5.svg";
+      iconTomorrow.src = "animated/rainy-5.svg";
       iconTomorrow.alt = "Cloudy & Rainy";
     } else if (tomorrow === 1 && WEATHER.includes("thunder")) {
-      iconTomorrow.src = "weather-icons/animated/thunder.svg";
+      iconTomorrow.src = "animated/thunder.svg";
       iconTomorrow.alt = "Thunder & Rainy";
     } else if (tomorrow === 1 && WEATHER.includes("sunny")) {
-      iconTomorrow.src = "weather-icons/animated/rainy-1.svg";
+      iconTomorrow.src = "animated/rainy-1.svg";
       iconTomorrow.alt = "Sunny & Rainy";
     } else if (
       tomorrowSnowChance === 1 &&
@@ -401,25 +401,25 @@ document.addEventListener("DOMContentLoaded", function () {
         WEATHER.includes("blizzard") ||
         WEATHER.includes("ice"))
     ) {
-      iconTomorrow.src = "weather-icons/animated/snowy-6.svg";
+      iconTomorrow.src = "animated/snowy-6.svg";
       iconTomorrow.alt = "Snow";
     } else if (
       tomorrow === 0 &&
       (WEATHER.includes("clear") || WEATHER.includes("sunny"))
     ) {
-      iconTomorrow.src = "weather-icons/animated/day.svg";
+      iconTomorrow.src = "animated/day.svg";
       iconTomorrow.alt = "Clear";
     } else if (tomorrow === 0 && WEATHER.includes("cloud")) {
-      iconTomorrow.src = "weather-icons/animated/cloudy.svg";
+      iconTomorrow.src = "animated/cloudy.svg";
       iconTomorrow.alt = "Cloud";
     } else if (
       tomorrow === 0 &&
       (WEATHER.includes("rain") || WEATHER.includes("patch"))
     ) {
-      iconTomorrow.src = "weather-icons/animated/rainy-4.svg";
+      iconTomorrow.src = "animated/rainy-4.svg";
       iconTomorrow.alt = "Light Rain";
     } else {
-      iconTomorrow.src = "weather-icons/animated/day.svg";
+      iconTomorrow.src = "animated/day.svg";
       iconTomorrow.alt = "Clear";
     }
     forecastDivMain.appendChild(iconTomorrow);
@@ -434,13 +434,13 @@ document.addEventListener("DOMContentLoaded", function () {
         WEATHER.includes("patch") ||
         WEATHER.includes("mist"))
     ) {
-      iconAfterTomorrow.src = "weather-icons/animated/rainy-5.svg";
+      iconAfterTomorrow.src = "animated/rainy-5.svg";
       iconAfterTomorrow.alt = "Cloudy & Rainy";
     } else if (afterTomorrow === 1 && WEATHER.includes("thunder")) {
-      iconAfterTomorrow.src = "weather-icons/animated/thunder.svg";
+      iconAfterTomorrow.src = "animated/thunder.svg";
       iconAfterTomorrow.alt = "Thunder & Rainy";
     } else if (afterTomorrow === 1 && WEATHER.includes("sunny")) {
-      iconAfterTomorrow.src = "weather-icons/animated/rainy-1.svg";
+      iconAfterTomorrow.src = "animated/rainy-1.svg";
       iconAfterTomorrow.alt = "Sunny & Rainy";
     } else if (
       afterTomorrowSnowChance === 1 &&
@@ -449,25 +449,25 @@ document.addEventListener("DOMContentLoaded", function () {
         WEATHER.includes("blizzard") ||
         WEATHER.includes("ice"))
     ) {
-      iconAfterTomorrow.src = "weather-icons/animated/snowy-6.svg";
+      iconAfterTomorrow.src = "animated/snowy-6.svg";
       iconAfterTomorrow.alt = "Snow";
     } else if (
       afterTomorrow === 0 &&
       (WEATHER.includes("clear") || WEATHER.includes("Sunny"))
     ) {
-      iconAfterTomorrow.src = "weather-icons/animated/day.svg";
+      iconAfterTomorrow.src = "animated/day.svg";
       iconAfterTomorrow.alt = "Clear";
     } else if (afterTomorrow === 0 && WEATHER.includes("cloud")) {
-      iconAfterTomorrow.src = "weather-icons/animated/cloudy.svg";
+      iconAfterTomorrow.src = "animated/cloudy.svg";
       iconAfterTomorrow.alt = "Cloud";
     } else if (
       today === 0 &&
       (WEATHER.includes("rain") || WEATHER.includes("patch"))
     ) {
-      iconAfterTomorrow.src = "weather-icons/animated/rainy-4.svg";
+      iconAfterTomorrow.src = "animated/rainy-4.svg";
       iconAfterTomorrow.alt = "Light Rain";
     } else {
-      iconAfterTomorrow.src = "weather-icons/animated/day.svg";
+      iconAfterTomorrow.src = "animated/day.svg";
       iconAfterTomorrow.alt = "Clear";
     }
     forecastDivMain.appendChild(iconAfterTomorrow);
